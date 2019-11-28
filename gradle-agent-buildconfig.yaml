@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: updater 
+spec:
+  source:
+    git:
+      ref: master
+      uri: https://github.com/jianghaifeng/owasp_cache.git
+    contextDir: /
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: updater:latest
