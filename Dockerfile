@@ -1,4 +1,4 @@
-FROM registry.redhat.io/openshift3/jenkins-slave-maven-rhel7
+FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
 USER root
 
 PATH=$PATH:/opt/dependency-check/bin
