@@ -1,0 +1,39 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: updater-cronjob
+spec:
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 5
+  schedule: "0/1 * * * *" 
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            parent: "updater-cronjob"
+        spec:
+          restartPolicy: Never
+          volumes:
+          - name: cache-files
+            persistentVolumeClaim:
+              claimName: owasp-data 
+          containers:
+          - name: updater-cronjob 
+            image: 172.30.1.1:5000/myproject/updater
+            imagePullPolicy: Always
+            command: ["bash", "-c",  "echo hello >>  /var/owasp/cache/1.txt"]
+            resources:
+              limits:
+                cpu: 2000m
+                memory: 1.5G
+            env:
+            - name: proxy_host
+              value: "abc.com"
+            - name: proxy_port
+              value: "8080"
+            volumeMounts:
+            - mountPath: /var/owasp/cache
+              name: cache-files
