@@ -5,7 +5,7 @@ metadata:
 spec:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 5
-  schedule: "0/1 * * * *" 
+  schedule: "*/1 * * * *" 
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -24,11 +24,11 @@ spec:
           - name: updater-cronjob 
             image: 172.30.1.1:5000/myproject/updater
             imagePullPolicy: Always
-            command: ["bash", "-c",  "echo hello >>  /var/owasp/cache/1.txt"]
+            command: ["bash", "-c",  "echo $(date) >>  /var/owasp/cache/1.txt"]
             resources:
               limits:
-                cpu: 2000m
-                memory: 1.5G
+                cpu: 500m
+                memory: 0.5G
             env:
             - name: proxy_host
               value: "abc.com"
